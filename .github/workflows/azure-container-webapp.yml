@@ -1,4 +1,4 @@
-name: Build and deploy a container to an Azure Web App
+name: Build and deploy the containers to the ACR.
 on:
   push:
     branches: [ "main" ]
@@ -31,6 +31,12 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: appframeukwacr.azurecr.io/${{ env.REPO }}:${{ github.sha }}
+          tags: appframeukwacr.azurecr.io/TableStorageAPI:${{ github.sha }}
           file: ./Dockerfile
 
+      - name: Build and push container image to registry
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: appframeukwacr.azurecr.io/ReplicationTargetAPI:${{ github.sha }}
+          file: ./Dockerfile
