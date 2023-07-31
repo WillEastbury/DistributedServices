@@ -1,4 +1,4 @@
-name: Build and deploy the containers to the ACR.
+name: Build and deploy the TableServiceAPI container to the ACR.
 on:
   push:
     branches: [ "main" ]
@@ -33,10 +33,4 @@ jobs:
           push: true
           tags: appframeukwacr.azurecr.io/tableserviceapi:${{ github.sha }}
           file: ./Dockerfile
-
-      - name: Build and push container image to registry
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: appframeukwacr.azurecr.io/replicationtargetapi:${{ github.sha }}
-          file: ./Dockerfile
+          
