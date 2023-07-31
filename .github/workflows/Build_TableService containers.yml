@@ -1,4 +1,4 @@
-name: Build and deploy the TableServiceAPI container to the ACR.
+name: Build and push the TableServiceAPI container to the ACR.
 on:
   push:
     branches: [ "main" ]
