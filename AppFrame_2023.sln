@@ -7,9 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppFrame.Interfaces", "AppF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppFrame.Implementations", "AppFrame.Implementations\AppFrame.Implementations.csproj", "{F38576D4-1B97-415C-90AE-1F0F9605D49A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReplicationTargetAPI", "ReplicationTargetAPI\ReplicationTargetAPI.csproj", "{4A09D14C-3049-4CA0-A48A-41A8BEE2ACFF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReplicationTargetAPI", "AppFrame.Services\ReplicationTargetAPI\ReplicationTargetAPI.csproj", "{4A09D14C-3049-4CA0-A48A-41A8BEE2ACFF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableServiceAPI", "TableServiceAPI\TableServiceAPI.csproj", "{059D9CEC-F0FD-4703-AC73-723A9A9C5079}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableServiceAPI", "AppFrame.Services\TableServiceAPI\TableServiceAPI.csproj", "{059D9CEC-F0FD-4703-AC73-723A9A9C5079}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
