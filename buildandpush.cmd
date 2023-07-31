@@ -9,7 +9,7 @@ az acr credential show --name appframeukwacr --query "passwords[0].value"
 
 # Login to the ACR
 az acr login --name appframeukwacr
-cd /AppFrame/Services/TableServiceAPI
+cd AppFrame.Services/TableServiceAPI
 
 # Build and push the table service
 docker build -t appframeukwacr.azurecr.io/tableremoteservice:v1
