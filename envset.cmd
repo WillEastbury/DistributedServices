@@ -1,2 +1,0 @@
-SET acrname=weacr
-SET acrLoginServer=acrloginweacr
