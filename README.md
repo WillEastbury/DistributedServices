@@ -49,7 +49,7 @@ It's really a sample of my thoughts on building distributed, reliable services t
 Behind the scenes the following core fundamental services will be created
 --------------------
 - TableStorageService -> Code Complete
-- ReplicaTargetService -> Code Complete
+- ReplicaTargetService -> Code Complete [![Build and deploy container app to Azure Web App - ReplicaTargetAPI](https://github.com/WillEastbury/DistributedServices/actions/workflows/Deploy_ReplicaTargetAPI.yml/badge.svg)](https://github.com/WillEastbury/DistributedServices/actions/workflows/Deploy_ReplicaTargetAPI.yml)
 - QueueService -> 
 - PubSubService -> 
 - AuthorizationService -> 
