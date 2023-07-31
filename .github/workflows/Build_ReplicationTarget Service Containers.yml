@@ -1,4 +1,4 @@
-name: Build and deploy the containers to the ACR.
+name: Build and push the ReplicationTargetAPI Container to the ACR.
 on:
   push:
     branches: [ "main" ]
