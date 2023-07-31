@@ -24,12 +24,12 @@ public class IndexedLoggedObjectStore : IIndexedLoggedObjectStore
     }
     public async Task<bool> CommitTransaction(string TransactionId){
 
-        return await lkvs.SetTransactionState(TransactionId);
+        return await lkvs.SetTransactionState(TransactionId, CommitState.Committed);
 
     }
     public async Task<bool> CancelTransaction(string TransactionId){
 
-        return await lkvs.SetTransactionState(int.Parse(TransactionId));
+        return await lkvs.SetTransactionState(TransactionId, CommitState.Broken);
 
     }
     public async Task Delete(int transactionId, string key)

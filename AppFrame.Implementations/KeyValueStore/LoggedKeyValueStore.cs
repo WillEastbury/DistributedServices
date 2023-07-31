@@ -19,7 +19,7 @@ namespace AppFrame.Implementations
 
         public async Task<string> BeginTransaction(){
 
-            return await transactionalPagedStorageManager.BeginTransaction().ToString();
+            return (await transactionalPagedStorageManager.BeginTransaction()).ToString();
 
         }
 
@@ -32,10 +32,11 @@ namespace AppFrame.Implementations
 
         public async Task<bool> CancelTransaction(string TransactionId){
 
-            await transactionalPagedStorageManager.SetTransactionState(int.Parse(TransactionId), CommitState.Cancelled);
+            await transactionalPagedStorageManager.SetTransactionState(int.Parse(TransactionId), CommitState.Broken);
             return true;
 
         }
+
 
         public async Task<bool> Exists(string key)
         {
@@ -175,6 +176,12 @@ namespace AppFrame.Implementations
                 writtenBytes += writeBytes;
                 await transactionalPagedStorageManager.SetPageData(transactionId, key, ++dataPages, pageData);
             }
+        }
+
+        public Task<bool> SetTransactionState(string TransactionId, CommitState commitState)
+        {
+            transactionalPagedStorageManager.SetTransactionState(int.Parse(TransactionId), commitState);
+            return Task.FromResult(true);
         }
     }
 }

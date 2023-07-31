@@ -1,5 +1,5 @@
 # Create the ARM Group (and the ACR and app service instances) 
-az deployment group create --resource-group appframe --template-file ./acr.bicep --parameters acrName=appframeukwacr
+az deployment group create --resource-group <YourResourceGroup> --template-file ./acr.bicep --query properties.outputs.acrLoginServer.value --parameters acrName=appframeukwacr
 
 # Get the admin username
 az acr credential show --name appframeukwacr --query "username"

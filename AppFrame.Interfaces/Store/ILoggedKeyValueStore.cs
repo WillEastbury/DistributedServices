@@ -23,5 +23,6 @@ public interface ILoggedKeyValueStore
     Task<string> BeginTransaction();
     Task<bool> CommitTransaction(string TransactionId); 
     Task<bool> CancelTransaction(string TransactionId); 
+    Task<bool> SetTransactionState(string TransactionId, CommitState commitState);
 }
 
