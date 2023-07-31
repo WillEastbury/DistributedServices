@@ -1,33 +1,52 @@
-# DistributedServices
-A sample of my thoughts on building distributed, reliable services to support a business in it's critical operations
-Includes Tabular indexed distributed Storage, Synchronous Replication of storage, Transaction Management and log Replay, Clustering and other challenges. 
----------------------------------------------------------------------------------
+# Project Overview
+This project includes a number of classes and interfaces that work together to implement a transactional paged storage system with support for indexing and query operations. Here's a high-level overview of how these components interact.
 
-The following modules come together under the covers to make this all work, each with appropriate Interfaces and DI setup modules
-------------------------
-- DiskPagedStorageIO
-- FileMetaData
-- LocalPagedStorage
-- RemotePagedStorage
-- InMemoryCache
-- IndexedLoggedObjectStore
-- LoggedKeyValueStore
-- PagedStorageReplicaSet
-- TransactionalPagedStorageManager
-- TransactionalPageUpdate
-- TransactionLog
-- BinarySearchTree + BinarySearchTreeNode
-- TableOfT
-- PatchInstruction
-- ConjunctionOperator
-- QueryOperator
-- SortDirection
-- WhereExpressionNode
-- PrincipalData
-- OAuthToken
-- TokenCheckMiddleware
+# Core Classes
+## DiskPagedStorageIO
+This class is responsible for handling the direct input/output operations with the disk. It provides the basic functionality for reading from and writing to disk.
 
-Behind the scenes the following core fundamental services should exist
+## FileMetaData
+The FileMetaData class is used for maintaining the metadata associated with each file. Metadata might include details like the file name, size, creation date, map of pages.
+
+## LocalPagedStorage and RemotePagedStorage
+These classes implement the IPagedStorageProvider interface for local and remote environments respectively. They handle the creation, retrieval, and deletion of pages from the corresponding storage systems.
+
+## Cache
+### InMemoryCache
+The InMemoryCache class is a simple implementation of an in-memory cache. It temporarily stores data that has been recently read from or written to disk, improving the performance of subsequent read operations.
+
+### OnFileSystemCache
+The OnFileSystemCache class is a simple implementation of a disk-based cache that is swappable into any ICache dependency. It temporarily stores data that has been recently read from or written to disk with a much lower memory requirement than the InMemoryCache, improving the performance of subsequent read operations.
+
+## Transactional Storage
+### TransactionalPagedStorageManager
+This class handles the management of pages in a transactional manner. It utilizes the ITransactionLogProvider to log operations and support transaction rollbacks.
+
+### TransactionalPageUpdate
+The TransactionalPageUpdate class represents an update operation within a transaction. It includes details of the pages that were updated during the transaction.
+
+### TransactionLog
+This class provides functionality to manage a log of transactions. It supports operations like adding new entries to the log, updating the status of a log entry, and rolling back transactions.
+
+## Indexed Storage
+### BinarySearchTree + BinarySearchTreeNode
+These classes implement a binary search tree for indexing purposes. The BinarySearchTree class represents the tree itself, while the BinarySearchTreeNode represents individual nodes within the tree.
+
+### TableOfT
+The TableOfT class represents a table in our database. It uses binary search trees to create indexes for each property of the T object that it stores.
+
+## Query Handling
+### ConjunctionOperator, QueryOperator, SortDirection, WhereExpressionNode
+These classes are used to represent and process SQL-like query expressions. They include classes for different types of operators (ConjunctionOperator, QueryOperator), sorting directives (SortDirection), and the structure of WHERE clause expressions (WhereExpressionNode).
+
+## Security
+### PrincipalData, OAuthToken, TokenCheckMiddleware
+These classes are related to security and authentication. 
+PrincipalData represents the security principal of a user, OAuthToken represents a token returned by an OAuth authentication process, and TokenCheckMiddleware is a middleware that checks the validity of the token in the request.
+
+It's really a sample of my thoughts on building distributed, reliable services to support a business in it's critical operations. 
+
+Behind the scenes the following core fundamental services will be created
 --------------------
 - TableStorageService -> Code Complete
 - ReplicaTargetService -> Code Complete
@@ -42,9 +61,9 @@ Behind the scenes the following core fundamental services should exist
 - LockService
 - BusinessRuleService
 
-- RequestPartitionProxyRoutingService -> Will use YARP to route to remote replicas
+- RequestPartitionProxyRoutingService -> Will use YARP to route to remote replicas for scale out and availability.
 
-The following business application services will also exist
+The following * business application services * will also exist
 ------------------
 - FormService (Generates HTML Forms for list and interaction with business objects)
 - ReportService (Generates Static HTML Reports)
@@ -99,7 +118,7 @@ graph TD
   AX11[FormServiceAPI]
   AX12[TrackedWorkflowServiceAPI]
   AX13[ReportServiceAPI]
-  A[Partition Router API IRequestProxy]
+  A[PartitionRouterAPI IRequestProxy]
   AS[TableServiceAPI]
   AA1[ReplicationServiceAPI]
   AA2[ReplicationServiceAPI]
@@ -134,20 +153,20 @@ graph TD
   Q -->|Replica 1 - Ireland| AA1
   Q -->|Replica 2 - Western Australia| AA2
   Q -->|Replica 3 - Western USA| AA3
-  P --> R[DiskBackedPageStorageIO]
-  P --> S[InMemoryCache]
+  P --> R[DiskBackedPageStorageIO IPageStorageIO]
+  P --> S[InMemoryCache ICache]
   AA1 --> BB1[ReplicationContextManager]
-  BB1 --> CC1[LocalPagedStorage]
-  CC1 --> DD1[DiskBackedPageStorageIO]
-  CC1 --> T[InMemoryCache]
+  BB1 --> CC1[LocalPagedStorage ILocalPagedStorage]
+  CC1 --> DD1[DiskBackedPageStorageIO IPageStorageIO]
+  CC1 --> T[InMemoryCache ICache]
   AA2 --> BB2[ReplicationContextManager]
-  BB2 --> CC2[LocalPagedStorage]
-  CC2 --> DD2[DiskBackedPageStorageIO]
-  CC2 --> U[InMemoryCache]
+  BB2 --> CC2[LocalPagedStorage ILocalPagedStorage]
+  CC2 --> DD2[DiskBackedPageStorageIO IPageStorageIO]
+  CC2 --> U[InMemoryCache ICache]
   AA3 --> BB3[ReplicationContextManager]
-  BB3 --> CC3[LocalPagedStorage]
-  CC3 --> DD3[DiskBackedPageStorageIO]
-  CC3 --> V[InMemoryCache]
+  BB3 --> CC3[LocalPagedStorage ILocalPagedStorage]
+  CC3 --> DD3[DiskBackedPageStorageIO IPageStorageIO]
+  CC3 --> V[InMemoryCache ICache]
 
 ```
 I will also provide deployment samples and config files, with dockerfiles and command line scripts, for each service for a turnkey scripted deployment.
