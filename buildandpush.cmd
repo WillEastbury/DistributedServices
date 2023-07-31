@@ -1,8 +1,16 @@
-az deployment group create --resource-group appframe> --template-file ./acr.bicep --parameters acrName=appframeukwacr
-az acr login --name appframeukwacr
-docker build -t TableService
-az acr login --name appframeukwacr
+# Create the ARM Group (and the ACR and app service instances) 
+az deployment group create --resource-group appframe --template-file ./acr.bicep --parameters acrName=appframeukwacr
 
-docker tag TableService %%acrLoginServer%%/%%service%%:%%tag%%
-docker push %%acrLoginServer%%/%%service%%:%%tag%%
+# Login to the ACR
+az acr login --name appframeukwacr
+cd /AppFrame/Services/TableServiceAPI
+
+# Build and push the table service
+docker build -t appframeukwacr.azurecr.io/tableremoteservice:v1
+docker push appframeukwacr.azurecr.io/tableremoteservice:v1
+
+# Build and push the replica service
+cd ../ReplicationTargetAPI
+docker build -t appframeukwacr.azurecr.io/replicationtargetservice:v1
+docker push appframeukwacr.azurecr.io/replicationtargetservice:v1
 
